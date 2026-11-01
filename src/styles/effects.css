@@ -1,0 +1,202 @@
+/* ---------- pointer spotlight ---------- */
+.spotlight {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 520px;
+  height: 520px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.6s var(--ease);
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 255, 255, 0.055),
+    rgba(255, 255, 255, 0.018) 42%,
+    transparent 68%
+  );
+  will-change: transform;
+}
+
+.spotlight[data-active='true'] {
+  opacity: 1;
+}
+
+/* ---------- scroll progress ---------- */
+.progress {
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: 1px;
+  z-index: 90;
+  background: linear-gradient(90deg, #6f6f6f, #ffffff);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  pointer-events: none;
+}
+
+/* ---------- tilt cards ---------- */
+.tilt {
+  transform-style: preserve-3d;
+  transition: transform 0.5s var(--ease);
+}
+
+.tilt:hover {
+  transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+}
+
+/* sheen that follows the pointer inside a card */
+.news-card,
+.award-row {
+  position: relative;
+  isolation: isolate;
+}
+
+.news-card::after,
+.award-row::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s var(--ease);
+  background: radial-gradient(
+    320px circle at var(--tilt-mx, 50%) var(--tilt-my, 50%),
+    rgba(255, 255, 255, 0.09),
+    transparent 62%
+  );
+}
+
+.news-card:hover::after,
+.award-row:hover::after {
+  opacity: 1;
+}
+
+/* ---------- hero wordmark entrance ---------- */
+.hero-name span {
+  display: inline-block;
+  animation: word-in 1.15s var(--ease) both;
+}
+
+.hero-name span:nth-child(1) {
+  animation-delay: 0.05s;
+}
+
+.hero-name span:nth-child(2) {
+  animation-delay: 0.16s;
+}
+
+.hero-name span:nth-child(3) {
+  animation-delay: 0.28s;
+}
+
+@keyframes word-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 0.34em, 0) rotate(1.2deg);
+    filter: blur(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+}
+
+/* ---------- image parallax ---------- */
+.work-cell img,
+.work-cell video,
+.gallery img,
+.news-thumb img,
+.about-photo img {
+  transition: transform 1.2s var(--ease), filter 0.7s var(--ease);
+}
+
+.work-cell:hover img,
+.work-cell:hover video {
+  transform: scale(1.06) translateY(-2%);
+}
+
+/* ---------- stat pulse ---------- */
+.stat b {
+  font-variant-numeric: tabular-nums;
+}
+
+.stat:hover b {
+  color: #fff;
+  transition: color 0.4s var(--ease);
+}
+
+/* ---------- footer wordmark shimmer ---------- */
+.foot-big span {
+  background-size: 220% 100%;
+  animation: shimmer 9s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* ---------- link / button micro-motion ---------- */
+.nav-cta,
+.plan-cta,
+.form-submit,
+.reel-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-cta::before,
+.plan-cta::before,
+.form-submit::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 20%, rgba(0, 0, 0, 0.08) 50%, transparent 80%);
+  transform: translateX(-120%);
+  transition: transform 0.75s var(--ease);
+}
+
+.nav-cta:hover::before,
+.plan-cta:hover::before,
+.form-submit:hover::before {
+  transform: translateX(120%);
+}
+
+/* ---------- section rule draw-in ---------- */
+.rule {
+  transform-origin: left;
+  animation: rule-in 1.4s var(--ease) both;
+}
+
+@keyframes rule-in {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-name span,
+  .foot-big span,
+  .rule {
+    animation: none;
+  }
+  .tilt:hover {
+    transform: none;
+  }
+  .news-card::after,
+  .award-row::after,
+  .spotlight {
+    display: none;
+  }
+}

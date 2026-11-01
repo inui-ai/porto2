@@ -1,0 +1,302 @@
+/* ---------- hero ---------- */
+.hero {
+  position: relative;
+  padding: 0 0 28px;
+  overflow: clip;
+}
+
+.hero-top {
+  position: relative;
+  /* container so the fitted name can size itself from the column width */
+  container-type: inline-size;
+  height: clamp(560px, 76vh, 760px);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-bottom: 8px;
+}
+
+/* WebGL mesh behind the display name; bleeds to the viewport edges. The scrim
+   keeps the type readable. */
+.hero-shader {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 100vw;
+  transform: translateX(-50%);
+  z-index: 0;
+  overflow: hidden;
+  opacity: 0.62;
+  pointer-events: none;
+}
+
+.hero-shader::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(18, 18, 18, 0.72), rgba(18, 18, 18, 0.18) 46%, rgba(18, 18, 18, 0.92)),
+    radial-gradient(120% 90% at 50% 100%, rgba(18, 18, 18, 0.85), transparent 62%);
+}
+
+.hero-name {
+  position: relative;
+  z-index: 2;
+  font-size: clamp(40px, 13.5vw, 218px);
+  line-height: 0.92;
+  letter-spacing: -0.07em;
+  font-weight: 600;
+  white-space: nowrap;
+  /* optical alignment: the L's side bearing tucks into the gutter */
+  margin: 0 0 0 -0.055em;
+  /* reserves room for descenders so the type never touches the hairline below */
+  padding-bottom: 0.24em;
+  color: #fff;
+  /* overridden per brand length by useFitText */
+  font-size: min(var(--fit-max, 218px), calc(100cqw / var(--fit-ratio, 3.25)));
+  /* pin the optical size axis so glyph widths stay proportional to font size */
+  font-variation-settings: 'opsz' 144, 'wght' 600;
+}
+
+.hero-name span {
+  display: inline-block;
+  transform: translateY(0);
+}
+
+.hero-blurb {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 26px 0 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.hero-blurb p {
+  max-width: 33ch;
+  font-size: 16px;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  color: #e7e7e7;
+}
+
+.hero-loc {
+  font-size: 14px;
+  color: var(--text-mute);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.hero-loc b {
+  color: #fff;
+  font-weight: 500;
+}
+
+/* marquee of client logos */
+.marquee {
+  position: relative;
+  height: 86px;
+  display: flex;
+  align-items: center;
+  background: var(--bg-elev);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  overflow: hidden;
+  mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+}
+
+.marquee-track {
+  display: flex;
+  align-items: center;
+  gap: 78px;
+  width: max-content;
+  animation: slide 42s linear infinite;
+  will-change: transform;
+}
+
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+.marquee-logo {
+  font-family: var(--serif);
+  font-size: 27px;
+  letter-spacing: -0.03em;
+  color: #fff;
+  opacity: 0.55;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.marquee-logo[data-variant='1'] {
+  font-family: var(--sans);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.marquee-logo[data-variant='2'] {
+  font-style: italic;
+  letter-spacing: 0.01em;
+}
+
+@keyframes slide {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+/* work grid */
+.work-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-top: 8px;
+}
+
+.work-cell {
+  position: relative;
+  display: block;
+  aspect-ratio: 730 / 548;
+  overflow: hidden;
+  background: #0e0e0e;
+}
+
+.work-cell img,
+.work-cell video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.9s var(--ease), filter 0.6s var(--ease);
+}
+
+.work-cell:hover img,
+.work-cell:hover video {
+  transform: scale(1.035);
+}
+
+.work-cell__meta {
+  position: absolute;
+  inset: auto 0 0 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 26px 28px;
+  background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.6));
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.45s var(--ease), transform 0.45s var(--ease);
+}
+
+.work-cell:hover .work-cell__meta {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.work-cell__meta h3 {
+  font-size: 26px;
+  letter-spacing: -0.02em;
+}
+
+.work-cell__meta span {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: var(--sans);
+}
+
+/* ticker under work */
+.work-ticker {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 18px 0 6px;
+  overflow: hidden;
+  color: var(--text-faint);
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.work-ticker b {
+  font-family: var(--serif);
+  font-size: 16px;
+  letter-spacing: -0.02em;
+  text-transform: none;
+  color: #d5d5d5;
+  font-weight: 400;
+}
+
+.work-ticker i {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #4a4a4a;
+  display: inline-block;
+}
+
+@media (max-width: 860px) {
+  .hero-top {
+    height: 56vh;
+    min-height: 360px;
+  }
+  .hero-name {
+    font-size: clamp(38px, 12.4vw, 120px);
+    white-space: nowrap;
+    letter-spacing: -0.05em;
+  }
+  .hero-blurb {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .work-grid {
+    grid-template-columns: 1fr;
+  }
+  .work-cell {
+    aspect-ratio: 4 / 3;
+  }
+  .work-cell__meta {
+    padding: 16px 18px;
+  }
+  .work-cell__meta h3 {
+    font-size: 20px;
+  }
+  .marquee {
+    height: 68px;
+  }
+  .marquee-logo {
+    font-size: 21px;
+  }
+  .marquee-logo[data-variant='1'] {
+    font-size: 12px;
+    letter-spacing: 0.18em;
+  }
+  .marquee-track {
+    gap: 48px;
+  }
+}
+
+/* Touch devices have no hover, so project captions must be permanently visible. */
+@media (hover: none) {
+  .work-cell__meta {
+    opacity: 1;
+    transform: none;
+    background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.72));
+  }
+}
+
+@media (max-width: 420px) {
+  .hero-name {
+    font-size: clamp(34px, 12vw, 60px);
+  }
+  .hero-blurb p {
+    font-size: 15px;
+  }
+}
