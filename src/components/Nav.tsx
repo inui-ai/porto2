@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useScrolled } from '../hooks/useSite'
 
 const links = [
@@ -11,6 +11,27 @@ const links = [
 export default function Nav() {
   const solid = useScrolled(24)
   const [open, setOpen] = useState(false)
+
+  useEffect(() => {
+    if (!open) return
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setOpen(false)
+    }
+    // Going back to the desktop layout must not leave the sheet open behind it.
+    const desktop = window.matchMedia('(min-width: 861px)')
+    const onDesktop = () => desktop.matches && setOpen(false)
+
+    document.addEventListener('keydown', onKeyDown)
+    desktop.addEventListener('change', onDesktop)
+    document.body.classList.add('nav-open')
+
+    return () => {
+      document.removeEventListener('keydown', onKeyDown)
+      desktop.removeEventListener('change', onDesktop)
+      document.body.classList.remove('nav-open')
+    }
+  }, [open])
 
   return (
     <header className={`nav${solid ? ' nav--solid' : ''}`}>

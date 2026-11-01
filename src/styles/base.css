@@ -29,6 +29,18 @@ html {
   scroll-behavior: smooth;
 }
 
+/* keep anchor targets clear of the fixed header */
+#atas,
+#tentang,
+#karya,
+#layanan,
+#penghargaan,
+#faq,
+#blog,
+#kontak {
+  scroll-margin-top: 84px;
+}
+
 body {
   margin: 0;
   background: var(--bg);
@@ -168,6 +180,11 @@ p {
   pointer-events: auto;
 }
 
+/* the mobile sheet is a full-screen surface: no page scrolling behind it */
+body.nav-open {
+  overflow: hidden;
+}
+
 .wordmark {
   font-family: var(--serif);
   font-size: 26px;
@@ -291,6 +308,12 @@ p {
     display: inline-flex;
     position: relative;
     z-index: 3;
+    /* comfortable 44px touch target on phones */
+    width: 44px;
+    height: 44px;
+  }
+  .nav--solid {
+    background: rgba(18, 18, 18, 0.94);
   }
   .wordmark {
     position: relative;
@@ -321,9 +344,12 @@ p {
     inset: 0;
     z-index: 1;
     display: grid;
+    /* the parent header disables pointer events, but the sheet must be tappable
+       and scrollable on its own */
+    pointer-events: auto;
     align-content: center;
     gap: 4px;
-    padding: 96px 24px 40px;
+    padding: calc(96px + env(safe-area-inset-top)) 24px calc(40px + env(safe-area-inset-bottom));
     overflow-y: auto;
     overscroll-behavior: contain;
     background: rgba(18, 18, 18, 0.97);
