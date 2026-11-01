@@ -18,8 +18,8 @@ export default function Experience() {
           </div>
 
           <div className="exp-list">
-            {experiences.map((e) => (
-              <article className="exp-row" key={e.role + e.company}>
+            {experiences.map((e, i) => (
+              <article className="exp-row" key={`${e.company}-${i}`}>
                 <h3>{e.role}</h3>
                 <div className="co">
                   {e.company}
